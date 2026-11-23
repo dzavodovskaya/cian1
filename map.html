@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Карта сценария ипотеки</title>
+    <link rel="stylesheet" href="map.css" />
+  </head>
+  <body>
+    <main class="map-page">
+      <header class="map-header">
+        <a class="back-link" href="/">← К прототипу</a>
+        <span class="map-logo">циан</span>
+      </header>
+
+      <section class="intro">
+        <p class="kicker">Карта сценария</p>
+        <h1>Короткая ипотечная анкета</h1>
+        <p>Все экраны, переходы и цели Яндекс Метрики. Счётчик в прототипе — заглушка <code>99999999</code>.</p>
+      </section>
+
+      <section class="legend" aria-label="Легенда">
+        <span><i class="screen-dot"></i> экран</span>
+        <span><i class="event-dot"></i> цель Метрики</span>
+        <span><i class="arrow-dot">→</i> пользовательское действие</span>
+      </section>
+
+      <section class="map-section" aria-labelledby="flow-title">
+        <h2 id="flow-title">Основной путь</h2>
+        <div class="flow" role="list" aria-label="Путь пользователя по анкете">
+          <article class="flow-card" role="listitem"><div class="mini-screen intro-screen"><b>Возьмите<br>ипотеку онлайн</b><span>Карточка квартиры</span><button>Дальше</button></div><h3>Вход</h3><code>mortgage_entry_view</code></article>
+          <div class="arrow"><span>Дальше</span><b>→</b><code>mortgage_start_form_click</code></div>
+          <article class="flow-card" role="listitem"><div class="mini-screen"><em>Вопрос 1 из 8</em><b>Какая ипотека нужна?</b><span>Сумма · срок · ставка</span><button>Продолжить</button></div><h3>Параметры</h3><code>mortgage_step_view {step: 1}</code></article>
+          <div class="arrow"><span>Продолжить</span><b>→</b><code>mortgage_step_completed {step: 1}</code></div>
+          <article class="flow-card" role="listitem"><div class="mini-screen"><em>Вопрос 2 из 8</em><b>Оставим контакты</b><span>ФИО · телефон · почта</span><button>Продолжить</button></div><h3>Контакты</h3><code>mortgage_step_view {step: 2}</code></article>
+          <div class="arrow"><span>Продолжить</span><b>→</b><code>mortgage_step_completed {step: 2}</code></div>
+          <article class="flow-card" role="listitem"><div class="mini-screen"><em>Вопрос 3 из 8</em><b>Планы покупки</b><span>Срок · объект · подбор</span><button>Продолжить</button></div><h3>Планы</h3><code>mortgage_step_view {step: 3}</code></article>
+          <div class="arrow"><span>Продолжить</span><b>→</b><code>mortgage_step_completed {step: 3}</code></div>
+          <article class="flow-card" role="listitem"><div class="mini-screen"><em>Вопрос 4 из 8</em><b>Занятость</b><span>Официально · самозанятый</span><button>Продолжить</button></div><h3>Занятость</h3><code>mortgage_step_view {step: 4}</code></article>
+          <div class="arrow"><span>Продолжить</span><b>→</b><code>mortgage_step_completed {step: 4}</code></div>
+          <article class="flow-card" role="listitem"><div class="mini-screen"><em>Вопрос 5 из 8</em><b>Доход</b><span>Доход в месяц</span><button>Продолжить</button></div><h3>Доход</h3><code>mortgage_step_view {step: 5}</code></article>
+          <div class="arrow"><span>Продолжить</span><b>→</b><code>mortgage_step_completed {step: 5}</code></div>
+          <article class="flow-card" role="listitem"><div class="mini-screen"><em>Вопрос 6 из 8</em><b>Кредиты</b><span>Платёж · льготная ипотека</span><button>Продолжить</button></div><h3>Обязательства</h3><code>mortgage_step_view {step: 6}</code></article>
+          <div class="arrow"><span>Продолжить</span><b>→</b><code>mortgage_step_completed {step: 6}</code></div>
+          <article class="flow-card" role="listitem"><div class="mini-screen"><em>Вопрос 7 из 8</em><b>Семья</b><span>Дети · семейная ипотека</span><button>Продолжить</button></div><h3>Семья</h3><code>mortgage_step_view {step: 7}</code></article>
+          <div class="arrow"><span>Продолжить</span><b>→</b><code>mortgage_step_completed {step: 7}</code></div>
+          <article class="flow-card" role="listitem"><div class="mini-screen"><em>Вопрос 8 из 8</em><b>Последние детали</b><span>Обеспечение · согласия</span><button>Отправить</button></div><h3>Отправка</h3><code>mortgage_submit_click {step: 8}</code></article>
+          <div class="arrow"><span>Отправить</span><b>→</b><code>mortgage_bank_request_started</code></div>
+          <article class="flow-card flow-card--result" role="listitem"><div class="mini-screen result-screen"><em>Предварительный результат</em><b>Сбербанк · ВТБ · Т-Банк</b><span>Одобрение, ставка, платёж</span><button>К эксперту</button></div><h3>Предложения банков</h3><code>mortgage_results_view {approved_count}</code></article>
+          <div class="arrow branch-arrow"><span>Запрос эксперта</span><b>→</b><code>mortgage_expert_request</code></div>
+          <article class="flow-card flow-card--success" role="listitem"><div class="mini-screen success-screen"><i>✓</i><b>Заявка сохранена</b><span>Выбранное время звонка</span></div><h3>Успех</h3><code>mortgage_expert_success_view</code></article>
+        </div>
+      </section>
+
+      <section class="branches" aria-labelledby="branches-title">
+        <h2 id="branches-title">Дополнительные ветки</h2>
+        <div class="branch-grid">
+          <article><h3>Другая квартира</h3><p>На входе пользователь выбирает альтернативный объект.</p><code>mortgage_property_changed {step: 'entry'}</code></article>
+          <article><h3>К поиску жилья</h3><p>Пользователь возвращается к поиску и продолжает без объекта.</p><code>mortgage_search_return_click {step: 'entry'}</code></article>
+          <article><h3>Нет одобрений</h3><p>Пользователь уменьшает сумму и возвращается к первому шагу.</p><code>mortgage_retry_with_lower_amount {previous_loan_amount, suggested_loan_amount}</code></article>
+        </div>
+      </section>
+
+      <section class="experiment" aria-labelledby="experiment-title">
+        <div class="experiment-heading"><p class="kicker">A/B-тест</p><h2 id="experiment-title">Проверяем более прямой вход в анкету</h2></div>
+        <div class="experiment-grid">
+          <article><h3>Гипотеза</h3><p>Если на первом экране показать выбранную квартиру, альтернативный объект и понятный выход в поиск, пользователи чаще начнут анкету без потери качества заявок.</p></article>
+          <article><h3>Вариант B</h3><p>Новый вход: карточка текущей квартиры, кликабельная карточка альтернативной, объёмная кнопка «К поиску жилья» и «Продолжить без квартиры».</p></article>
+          <article><h3>Основная метрика</h3><p><strong>Начало анкеты</strong>: <code>mortgage_start_form_click / mortgage_entry_view</code>.</p></article>
+          <article><h3>Ограничивающая метрика</h3><p><strong>Доля полных отказов</strong>: результаты с <code>approved_count = 0</code> среди отправленных заявок.</p></article>
+          <article><h3>Объём и срок</h3><p>10&nbsp;000 уникальных пользователей на вариант, всего 20&nbsp;000. Две полные недели, включая будние и выходные; остановка — не раньше достижения объёма.</p></article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,6 +1,24 @@
 const app = document.getElementById('app');
 const backButton = document.getElementById('backButton');
 const caption = document.getElementById('topbarCaption');
+const METRIKA_COUNTER_ID = 99999999;
+let lastScreenEvent = '';
+
+function reachGoal(name, params = {}) {
+  const payload = { ...params, counterId: METRIKA_COUNTER_ID };
+  window.__metrikaGoals = window.__metrikaGoals || [];
+  window.__metrikaGoals.push({ name, params: payload, at: new Date().toISOString() });
+  console.info('[Metrika stub]', name, payload);
+  if (typeof window.ym === 'function') window.ym(METRIKA_COUNTER_ID, 'reachGoal', name, payload);
+}
+
+function reachScreenGoal(name, params = {}) {
+  const key = `${name}:${JSON.stringify(params)}`;
+  if (key !== lastScreenEvent) {
+    lastScreenEvent = key;
+    reachGoal(name, params);
+  }
+}
 
 const initialState = {
   view: 'entry',
@@ -112,6 +130,7 @@ function chip(group, value, label) {
 }
 
 function renderEntry() {
+  reachScreenGoal('mortgage_entry_view', { step: 'entry', source: state.source, property_selected: state.propertySelected });
   const property = properties[state.propertyIndex];
   caption.textContent = 'Ипотека';
   backButton.hidden = true;
@@ -131,6 +150,7 @@ function renderEntry() {
 }
 
 function renderStep() {
+  reachScreenGoal('mortgage_step_view', { step: state.step });
   caption.textContent = 'Анкета';
   backButton.hidden = false;
   const progress = Math.round((state.step / 8) * 100);
@@ -258,6 +278,7 @@ function getOffers() {
 }
 
 function renderLoading() {
+  reachScreenGoal('mortgage_bank_request_started', { step: 8, loan_amount: state.loanAmount });
   caption.textContent = 'Проверяем';
   backButton.hidden = true;
   app.innerHTML = `<div class="loading"><div class="loader" aria-label="Загружаем предложения"></div><h1>Ищем подходящие предложения</h1><p class="lead">Сравниваем условия Сбербанка, ВТБ и Т-Банка</p><p class="hint">Это займёт несколько секунд</p></div>`;
@@ -267,6 +288,7 @@ function renderLoading() {
 function renderResults() {
   const offers = getOffers();
   const approvedCount = offers.filter((offer) => offer.approved).length;
+  reachScreenGoal('mortgage_results_view', { step: 'results', approved_count: approvedCount });
   caption.textContent = 'Предложения';
   backButton.hidden = false;
   const suggestedAmount = Math.max(500000, Math.floor(Math.min(...offers.map((offer) => calculateMaxLoan(offer.cap, offer.rate, state.loanTerm))) / 100000) * 100000);
@@ -281,6 +303,7 @@ function renderResults() {
 }
 
 function renderSuccess() {
+  reachScreenGoal('mortgage_expert_success_view', { step: 'success', call_time: state.callTime });
   caption.textContent = 'Готово';
   backButton.hidden = true;
   app.innerHTML = `<div class="content success"><div class="success-mark">✓</div><h1>Заявка сохранена</h1><p>Ипотечный эксперт партнёра позвонит вам <strong>${escapeHtml(state.callTime)}</strong>, поможет сравнить предложения и объяснит следующий шаг.</p><div class="button-row"><button class="button button--primary button--full" type="button" data-action="restart">Вернуться к поиску жилья</button></div></div>`;
@@ -295,6 +318,7 @@ function render() {
 }
 
 function startForm() {
+  reachGoal('mortgage_start_form_click', { step: 'entry', property_selected: state.propertySelected });
   state.loanAmount = state.propertySelected ? properties[state.propertyIndex].loan : '';
   state.step = 1;
   state.errors = [];
@@ -321,22 +345,24 @@ app.addEventListener('click', (event) => {
   if (!action) return;
   captureInputs();
   if (action === 'start') startForm();
-  if (action === 'change-property') { state.propertyIndex = (state.propertyIndex + 1) % properties.length; state.propertySelected = true; state.source = 'property'; render(); }
-  if (action === 'return-search') { state.propertySelected = false; state.source = 'search'; render(); }
-  if (action === 'continue-without') { state.propertySelected = false; state.source = 'search'; startForm(); }
+  if (action === 'change-property') { reachGoal('mortgage_property_changed', { step: 'entry' }); state.propertyIndex = (state.propertyIndex + 1) % properties.length; state.propertySelected = true; state.source = 'property'; render(); }
+  if (action === 'return-search') { reachGoal('mortgage_search_return_click', { step: 'entry' }); state.propertySelected = false; state.source = 'search'; render(); }
+  if (action === 'continue-without') { reachGoal('mortgage_continue_without_property', { step: 'entry' }); state.propertySelected = false; state.source = 'search'; startForm(); }
   if (action === 'continue') {
     if (!validateStep()) { render(); return; }
+    reachGoal('mortgage_step_completed', { step: state.step });
     if (state.step < 8) { state.step += 1; state.errors = []; render(); }
-    else { state.view = 'loading'; render(); }
+    else { reachGoal('mortgage_submit_click', { step: 8, loan_amount: state.loanAmount }); state.view = 'loading'; render(); }
   }
   if (action === 'retry') {
     const offers = getOffers();
     const maxAmount = Math.max(500000, Math.floor(Math.min(...offers.map((offer) => calculateMaxLoan(offer.cap, offer.rate, state.loanTerm))) / 100000) * 100000);
+    reachGoal('mortgage_retry_with_lower_amount', { step: 'results', previous_loan_amount: state.loanAmount, suggested_loan_amount: maxAmount });
     state.loanAmount = Math.min(Math.floor(state.loanAmount * .85 / 100000) * 100000, maxAmount);
     state.step = 1; state.errors = []; state.view = 'form'; render();
   }
   if (action === 'edit') { state.step = 1; state.errors = []; state.view = 'form'; render(); }
-  if (action === 'expert') { state.view = 'success'; render(); }
+  if (action === 'expert') { reachGoal('mortgage_expert_request', { step: 'results', call_time: state.callTime }); state.view = 'success'; render(); }
   if (action === 'restart') { state = { ...initialState }; render(); }
 });
 
