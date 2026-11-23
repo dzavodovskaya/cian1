@@ -1,0 +1,46 @@
+:root { --blue:#174a98; --deep:#0b3475; --pale:#eaf1ff; --ink:#182033; --muted:#667085; --line:#d9e1ee; --surface:#fff; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--ink); background:#f4f7fb; }
+* { box-sizing:border-box; }
+body { margin:0; }
+.map-page { max-width:1440px; margin:0 auto; padding:26px 28px 60px; }
+.map-header { display:flex; align-items:center; justify-content:space-between; }
+.back-link { color:var(--blue); font-size:14px; font-weight:650; text-decoration:none; }
+.map-logo { padding:5px 9px; border-radius:7px; background:var(--blue); color:#fff; font-weight:800; letter-spacing:-1px; }
+.intro { max-width:690px; margin:52px 0 28px; }
+.kicker { margin:0 0 8px; color:var(--blue); font-size:13px; font-weight:750; text-transform:uppercase; letter-spacing:.08em; }
+h1,h2,h3,p { margin-top:0; }
+h1 { margin-bottom:12px; font-size:38px; letter-spacing:-1.3px; }
+h2 { margin-bottom:16px; font-size:24px; letter-spacing:-.5px; }
+h3 { margin-bottom:7px; font-size:15px; }
+.intro p:last-child { margin-bottom:0; color:var(--muted); font-size:16px; line-height:1.5; }
+code { display:inline-block; padding:4px 6px; border-radius:6px; background:#f0f4fa; color:#45526a; font-size:11px; line-height:1.35; overflow-wrap:anywhere; }
+.legend { display:flex; flex-wrap:wrap; gap:17px; margin-bottom:42px; color:var(--muted); font-size:13px; }
+.legend span { display:flex; align-items:center; gap:7px; }
+.screen-dot,.event-dot { width:11px; height:11px; border-radius:50%; background:var(--blue); }
+.event-dot { background:#9eb8df; }
+.arrow-dot { color:var(--blue); font-size:20px; font-weight:800; line-height:.5; }
+.map-section { padding:25px; overflow:hidden; border:1px solid var(--line); border-radius:22px; background:var(--surface); }
+.flow { display:flex; align-items:center; gap:13px; width:max-content; min-width:100%; padding-bottom:10px; }
+.flow-card { width:180px; flex:0 0 180px; }
+.flow-card h3 { margin:10px 0 5px; }
+.mini-screen { display:flex; min-height:164px; flex-direction:column; justify-content:space-between; padding:13px; overflow:hidden; border:1px solid #ced9eb; border-radius:15px; background:linear-gradient(145deg,#fff,#f7faff); box-shadow:0 6px 16px rgba(23,74,152,.09); }
+.mini-screen em { color:var(--muted); font-size:10px; font-style:normal; }
+.mini-screen b { font-size:15px; line-height:1.15; }
+.mini-screen span { color:var(--muted); font-size:11px; line-height:1.3; }
+.mini-screen button { padding:8px; border:0; border-radius:8px; background:var(--blue); color:#fff; font-size:11px; font-weight:750; }
+.intro-screen { background:linear-gradient(150deg,#e6f1ff,#fff); }
+.result-screen { border-color:#9ec5a9; background:#f8fff9; }
+.success-screen { justify-content:center; gap:10px; background:#f5fbf6; text-align:center; }
+.success-screen i { display:grid; width:31px; height:31px; place-items:center; margin:auto; border-radius:50%; background:#dff3e3; color:#167847; font-style:normal; font-weight:800; }
+.arrow { display:grid; width:116px; flex:0 0 116px; gap:4px; place-items:center; color:var(--muted); text-align:center; }
+.arrow span { font-size:11px; }
+.arrow b { color:var(--blue); font-size:24px; line-height:1; }
+.arrow code { font-size:9px; }
+.branches,.experiment { margin-top:32px; }
+.branch-grid,.experiment-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; }
+.branch-grid article,.experiment-grid article { padding:17px; border:1px solid var(--line); border-radius:16px; background:var(--surface); }
+.branch-grid p,.experiment-grid p { margin:0; color:var(--muted); font-size:14px; line-height:1.45; }
+.experiment { padding:28px; border-radius:22px; background:#eaf1ff; }
+.experiment-heading { max-width:600px; }
+.experiment-grid article { border-color:#d4e0f2; }
+.experiment-grid strong { color:var(--ink); }
+@media (max-width:700px) { .map-page { padding:18px 16px 42px; } .intro { margin:35px 0 24px; } h1 { font-size:31px; } .map-section { margin:0 -3px; padding:18px; overflow:auto; } .flow { padding-bottom:16px; } .arrow { width:86px; flex-basis:86px; } .arrow code { max-width:86px; } .experiment { padding:20px; } }
